@@ -1,0 +1,48 @@
+{
+	"geode": "5.7.1",
+	"gd": {
+		"win": "2.2081",
+		"android": "2.2081",
+		"mac": "2.2081",
+		"ios": "2.2081"
+	},
+	"id": "treehousefalcon.quick-list",
+	"name": "Quick List",
+	"developer": "TreehouseFalcon",
+	"version": "v0.1.0",
+	"description": "Quickly add levels to your top list",
+	"tags": [
+		"enhancement",
+		"interface",
+		"offline",
+		"online",
+		"universal",
+		"utility"
+	],
+	"links": {
+		"source": "https://github.com/TreehouseFalcon/geode-quick-list"
+	},
+	"issues": {
+		"info": "Report issues via GitHub Issues",
+		"url": "https://github.com/TreehouseFalcon/geode-quick-list/issues"
+	},
+	"settings": {
+		"open-add-to-list-menu": {
+			"type": "bool",
+			"name": "Open Add to List Menu",
+			"description": "Open the list picker instead of adding the level directly to your top local list.",
+			"default": false
+		}
+	},
+	"dependencies": {
+		"geode.node-ids": ">=v1.23.3",
+		"imes.luauapi": ">=v0.1.0-beta.2"
+	},
+	"resources": {
+		"files": [
+			"mod/*.luau",
+			"assets/*.glb",
+			"assets/*.gltf"
+		]
+	}
+}
