@@ -1,0 +1,6 @@
+# This file lists tools managed by Rokit, a toolchain manager for Roblox projects.
+# New tools can be added by running `rokit add <tool>` in a terminal.
+
+[tools]
+luau-lsp = "JohnnyMorganz/luau-lsp@1.68.1"
+stylua = "JohnnyMorganz/StyLua@2.5.2"

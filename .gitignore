@@ -62,6 +62,3 @@ build-*/
 # CLion
 .idea/
 /cmake-build-*/
-
-# LuauAPI types
-/types

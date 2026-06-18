@@ -1,0 +1,25 @@
+name: Analyze Luau
+
+on:
+  push:
+    branches:
+      - "**"
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  analyze:
+    name: Luau checks
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Rokit toolchain
+        uses: CompeyDev/setup-rokit@v0.2.1
+
+      - name: Analyze Luau
+        run: luau-lsp analyze --definitions types/geode.d.luau mod/
+
+      - name: Verify formatting
+        run: stylua -c mod/

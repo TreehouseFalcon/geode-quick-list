@@ -10,14 +10,6 @@ local ADD_TO_LIST_BUTTON_SCALE = 0.62
 local PRIORITY_MENU_TOUCH_PRIORITY = -129
 local MAX_RETAINED_PROXY_LAYERS = 8
 
-local GJ_LEVEL_TYPE = {
-	Default = 0,
-	Main = 1,
-	Editor = 2,
-	Saved = 3,
-	SearchResult = 4,
-}
-
 local retainedProxyLayers = {}
 
 local function shouldOpenAddToListMenu(): boolean
@@ -294,7 +286,8 @@ local function addListButtonToCell(cell, level)
 		return
 	end
 
-	local priorityPosition = convertPositionBetweenNodes(mainMenuPosition, mainMenu, priorityMenu)
+	local priorityPosition =
+		convertPositionBetweenNodes(mainMenuPosition, mainMenu, priorityMenu)
 	upsertQuickListButton(priorityMenu, PRIORITY_BUTTON_ID, priorityPosition, openForCell)
 
 	setPriorityMenuTouchPriority(priorityMenu)
@@ -303,7 +296,10 @@ end
 geode.hook("geode.gd.LevelCell:loadFromLevel/1", {
 	after = function(cell, level)
 		local levelType = level.m_levelType
-		if levelType ~= GJ_LEVEL_TYPE.SearchResult and levelType ~= GJ_LEVEL_TYPE.Saved then
+		if
+			levelType ~= geode.gd.GJLevelType.SearchResult
+			and levelType ~= geode.gd.GJLevelType.Saved
+		then
 			return
 		end
 		addListButtonToCell(cell, level)
