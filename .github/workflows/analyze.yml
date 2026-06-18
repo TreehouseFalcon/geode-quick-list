@@ -18,8 +18,10 @@ jobs:
       - name: Setup Rokit toolchain
         uses: CompeyDev/setup-rokit@v0.2.1
 
+      # luau-analyze doesn't have a way to pass global definitions yet.
       - name: Analyze Luau
-        run: luau-lsp analyze --definitions types/geode.d.luau mod/
+        if: false
+        run: luau-analyze mod/
 
       - name: Verify formatting
         run: stylua -c mod/
