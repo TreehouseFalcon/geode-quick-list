@@ -8,52 +8,59 @@ local OPEN_MENU_SETTING_ID = "open-add-to-list-menu"
 local ADD_TO_LIST_BUTTON_SPRITE = "GJ_listAddBtn_001.png"
 local ADD_TO_LIST_BUTTON_SCALE = 0.62
 local PRIORITY_MENU_TOUCH_PRIORITY = -129
-local MAX_RETAINED_PROXY_LAYERS = 8
 
-local retainedProxyLayers = {}
+local function shouldAttachQuickListButton(level): boolean
+	if not level then
+		return false
+	end
+
+	return level.m_levelType == geode.gd.GJLevelType.SearchResult
+end
 
 local function shouldOpenAddToListMenu(): boolean
-	return geode.Mod.getSettingValue(OPEN_MENU_SETTING_ID) == true
+	local ok, value = pcall(function()
+		return geode.Mod.getSettingValue(OPEN_MENU_SETTING_ID)
+	end)
+	return ok and value == true
 end
 
-local function trimRetainedProxyLayers()
-	while #retainedProxyLayers > MAX_RETAINED_PROXY_LAYERS do
-		local layer = table.remove(retainedProxyLayers, 1)
-		if layer then
-			layer:release()
-		end
-	end
-end
-
-local function createAddToListProxy(level: GJGameLevel): LevelInfoLayer?
-	local levelFields = geode.fields(level)
-	levelFields.quickListProxyOwner = true
-	local layer = gd.LevelInfoLayer.create(level, false)
-	levelFields.quickListProxyOwner = nil
-	if not layer then
+local function getMenuParent(anchor: CCNode?): CCNode?
+	if not anchor then
 		return nil
 	end
 
-	layer:retain()
-	geode.fields(layer).quickListProxy = true
-	table.insert(retainedProxyLayers, layer)
-	trimRetainedProxyLayers()
+	local current: CCNode = anchor
+	while current:getParent() do
+		current = current:getParent() :: CCNode
+	end
 
-	return layer
+	return current
 end
 
-local function openAddToListMenu(level, sender)
+local function openAddToListMenu(level, sender, anchor: CCNode?)
 	if not level then
 		return
 	end
 
 	task.defer(function()
-		local layer = createAddToListProxy(level)
+		local layer = gd.LevelInfoLayer.create(level, false)
 		if not layer then
 			return
 		end
 
+		local parent = getMenuParent(anchor)
+		if not parent then
+			return
+		end
+
+		parent:addChild(layer, 999)
 		layer:onAddToList(sender)
+
+		layer:scheduleOnce(function()
+			if layer:getParent() then
+				layer:removeFromParentAndCleanup(true)
+			end
+		end, 0)
 	end)
 end
 
@@ -69,6 +76,26 @@ local function getTopLocalList(): GJLevelList?
 	end
 
 	return lists:objectAtIndex(0) :: GJLevelList?
+end
+
+local function topLocalListContainsLevel(level: GJGameLevel): boolean
+	local listOk, listOrErr = pcall(getTopLocalList)
+	if not listOk then
+		print("Quick List: failed to check top local list: " .. tostring(listOrErr))
+		return false
+	end
+
+	local list = listOrErr
+	if not list then
+		return false
+	end
+
+	local levels = list.m_levels
+	if not levels then
+		return false
+	end
+
+	return table.find(levels, level.m_levelID) ~= nil
 end
 
 local function addLevelToTopLocalList(level): boolean
@@ -107,31 +134,26 @@ local function addLevelToTopLocalList(level): boolean
 	return true
 end
 
-local function addLevelOrOpenMenu(level, sender)
+local function addLevelOrOpenMenu(level, sender, anchor: CCNode?)
 	if shouldOpenAddToListMenu() then
-		openAddToListMenu(level, sender)
+		openAddToListMenu(level, sender, anchor)
 		return false
 	end
 
 	if addLevelToTopLocalList(level) then
 		return true
-	else
-		openAddToListMenu(level, sender)
-		return false
-	end
-end
-
-local function getMainLayer(cell)
-	local mainLayer = cell:getChildByID("main-layer")
-	if not mainLayer then
-		return nil
 	end
 
-	return mainLayer
+	openAddToListMenu(level, sender, anchor)
+	return false
 end
 
-local function getPriorityMenu(mainLayer): CCMenu?
-	local menu = mainLayer:getChildByID(PRIORITY_MENU_ID)
+local function getMainLayer(cell): CCNode?
+	return cell:getChildByID("main-layer")
+end
+
+local function getPriorityMenu(mainLayer: CCNode): CCMenu?
+	local menu = mainLayer:getChildByID(PRIORITY_MENU_ID) :: CCMenu?
 	if not menu then
 		menu = cocos.CCMenu.create()
 		if not menu then
@@ -146,7 +168,7 @@ local function getPriorityMenu(mainLayer): CCMenu?
 	return menu
 end
 
-local function getQuickListButtonPosition(viewButton): CCPoint
+local function getQuickListButtonPosition(viewButton: CCNode): CCPoint
 	local position: CCPoint = viewButton:getPosition()
 	local width: number = viewButton:getScaledContentWidth()
 	local height: number = viewButton:getScaledContentHeight()
@@ -157,7 +179,11 @@ local function getQuickListButtonPosition(viewButton): CCPoint
 	}
 end
 
-local function convertPositionBetweenNodes(position, fromNode, toNode): CCPoint
+local function convertPositionBetweenNodes(
+	position: CCPoint,
+	fromNode: CCNode,
+	toNode: CCNode
+): CCPoint
 	return toNode:convertToNodeSpace(fromNode:convertToWorldSpace(position))
 end
 
@@ -237,7 +263,7 @@ local function upsertQuickListButton(
 	return button
 end
 
-local function hideQuickListButtons(mainMenu, priorityMenu)
+local function hideQuickListButtons(mainMenu: CCMenu?, priorityMenu: CCMenu?)
 	local button = mainMenu and mainMenu:getChildByID(BUTTON_ID)
 	if button then
 		button:setVisible(false)
@@ -256,25 +282,29 @@ local function addListButtonToCell(cell, level)
 		return
 	end
 
+	if not shouldOpenAddToListMenu() and topLocalListContainsLevel(level) then
+		return
+	end
+
 	local mainLayer = getMainLayer(cell)
 	if not mainLayer then
 		return
 	end
 
-	local mainMenu = mainLayer:getChildByID("main-menu")
+	local mainMenu = mainLayer:getChildByID("main-menu") :: CCMenu?
 	if not mainMenu then
 		return
 	end
 
-	local viewButton = mainMenu:getChildByID("view-button")
+	local viewButton = mainMenu:getChildByID("view-button") :: CCNode?
 	if not viewButton then
 		return
 	end
 
 	local mainMenuPosition = getQuickListButtonPosition(viewButton)
-	local priorityMenu = nil
+	local priorityMenu: CCMenu? = nil
 	local openForCell = function(button: CCMenuItemSpriteExtra?)
-		if addLevelOrOpenMenu(cell.m_level, (button :: any) :: CCObject) then
+		if addLevelOrOpenMenu(cell.m_level, (button :: any) :: CCObject, mainLayer) then
 			hideQuickListButtons(mainMenu, priorityMenu)
 		end
 	end
@@ -293,34 +323,24 @@ local function addListButtonToCell(cell, level)
 	setPriorityMenuTouchPriority(priorityMenu)
 end
 
+local function scheduleCellButtonSetup(cell, level)
+	if not cell or not shouldAttachQuickListButton(level) then
+		return
+	end
+
+	task.defer(function()
+		local ok, err = pcall(function()
+			addListButtonToCell(cell, level)
+		end)
+		if not ok then
+			print("Quick List: failed to add button: " .. tostring(err))
+		end
+	end)
+end
+
 geode.hook("geode.gd.LevelCell:loadFromLevel/1", {
 	after = function(cell, level)
-		local levelType = level.m_levelType
-		if
-			levelType ~= geode.gd.GJLevelType.SearchResult
-			and levelType ~= geode.gd.GJLevelType.Saved
-		then
-			return
-		end
-		addListButtonToCell(cell, level)
-		return
-	end,
-})
-
-geode.hook("geode.gd.LevelInfoLayer:init/2", {
-	before = function(layer, level)
-		if level and geode.fields(level).quickListProxyOwner then
-			geode.fields(layer).quickListProxy = true
-		end
-		return
-	end,
-})
-
-geode.hook("geode.gd.LevelInfoLayer:downloadLevel/0", {
-	before = function(layer)
-		if geode.fields(layer).quickListProxy then
-			return geode.skip()
-		end
+		scheduleCellButtonSetup(cell, level)
 		return
 	end,
 })

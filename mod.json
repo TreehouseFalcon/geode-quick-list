@@ -9,7 +9,7 @@
 	"id": "treehousefalcon.quick-list",
 	"name": "Quick List",
 	"developer": "TreehouseFalcon",
-	"version": "v0.1.1",
+	"version": "v0.1.2",
 	"description": "Quickly add levels to your top list",
 	"tags": [
 		"enhancement",
@@ -26,17 +26,10 @@
 		"info": "Report issues via GitHub Issues",
 		"url": "https://github.com/TreehouseFalcon/geode-quick-list/issues"
 	},
-	"settings": {
-		"open-add-to-list-menu": {
-			"type": "bool",
-			"name": "Open Add to List Menu",
-			"description": "Open the list picker instead of adding the level directly to your top local list.",
-			"default": false
-		}
-	},
+	"settings": {},
 	"dependencies": {
 		"geode.node-ids": ">=v1.23.3",
-		"imes.luauapi": ">=v0.1.0-beta.2"
+		"imes.luauapi": ">=v0.1.0-beta.5"
 	},
 	"resources": {
 		"files": [

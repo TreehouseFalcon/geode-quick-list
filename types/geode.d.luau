@@ -8267,9 +8267,9 @@ end
 
 declare class GJChallengeItem extends CCObject
     m_challengeType: number
-    -- skipped m_count: encrypted-field
-    -- skipped m_reward: encrypted-field
-    -- skipped m_goal: encrypted-field
+    m_count: number
+    m_reward: number
+    m_goal: number
     m_timeLeft: number
     m_canClaim: boolean
     m_position: number
@@ -8567,7 +8567,7 @@ end
 declare class GJGameLevel extends CCNode
     m_fields: { [string]: any }
     m_lastBuildSave: CCDictionary?
-    -- skipped m_levelID: encrypted-field
+    m_levelID: number
     m_levelName: string
     m_levelDesc: string
     m_levelString: string
@@ -8578,15 +8578,15 @@ declare class GJGameLevel extends CCNode
     m_lockedEditorLayers: string
     m_savedCameraPositions: string
     m_previewLock: CCPoint
-    -- skipped m_userID: encrypted-field
-    -- skipped m_accountID: encrypted-field
+    m_userID: number
+    m_accountID: number
     m_difficulty: number
     m_audioTrack: number
     m_songID: number
     m_levelRev: number
     m_unlisted: boolean
     m_friendsOnly: boolean
-    -- skipped m_objectCount: encrypted-field
+    m_objectCount: number
     m_levelIndex: number
     m_ratings: number
     m_ratingsSum: number
@@ -8602,22 +8602,22 @@ declare class GJGameLevel extends CCNode
     m_selected: boolean
     m_localOrSaved: boolean
     m_disableShake: boolean
-    -- skipped m_isVerified: encrypted-field
+    m_isVerified: number
     m_isVerifiedRaw: boolean
     m_isUploaded: boolean
     m_hasBeenModified: boolean
     m_levelVersion: number
     m_gameVersion: number
-    -- skipped m_attempts: encrypted-field
-    -- skipped m_jumps: encrypted-field
-    -- skipped m_clicks: encrypted-field
-    -- skipped m_attemptTime: encrypted-field
+    m_attempts: number
+    m_jumps: number
+    m_clicks: number
+    m_attemptTime: number
     m_chk: number
     m_isChkValid: boolean
     m_isCompletionLegitimate: boolean
-    -- skipped m_normalPercent: encrypted-field
-    -- skipped m_orbCompletion: encrypted-field
-    -- skipped m_newNormalPercent2: encrypted-field
+    m_normalPercent: number
+    m_orbCompletion: number
+    m_newNormalPercent2: number
     m_practicePercent: number
     m_likes: number
     m_dislikes: number
@@ -8626,20 +8626,20 @@ declare class GJGameLevel extends CCNode
     m_isEpic: number
     m_levelFavorited: boolean
     m_levelFolder: number
-    -- skipped m_dailyID: encrypted-field
-    -- skipped m_demon: encrypted-field
+    m_dailyID: number
+    m_demon: number
     m_demonDifficulty: number
-    -- skipped m_stars: encrypted-field
+    m_stars: number
     m_autoLevel: boolean
     m_coins: number
-    -- skipped m_coinsVerified: encrypted-field
-    -- skipped m_password: encrypted-field
-    -- skipped m_originalLevel: encrypted-field
+    m_coinsVerified: number
+    m_password: number
+    m_originalLevel: number
     m_twoPlayerMode: boolean
     m_failedPasswordAttempts: number
-    -- skipped m_firstCoinVerified: encrypted-field
-    -- skipped m_secondCoinVerified: encrypted-field
-    -- skipped m_thirdCoinVerified: encrypted-field
+    m_firstCoinVerified: number
+    m_secondCoinVerified: number
+    m_thirdCoinVerified: number
     m_starsRequested: number
     m_showedSongWarning: boolean
     m_starRatings: number
@@ -9595,10 +9595,10 @@ end
 
 declare class GJStoreItem extends CCNode
     m_fields: { [string]: any }
-    -- skipped m_index: encrypted-field
-    -- skipped m_typeID: encrypted-field
-    -- skipped m_unlockType: encrypted-field
-    -- skipped m_price: encrypted-field
+    m_index: number
+    m_typeID: number
+    m_unlockType: number
+    m_price: number
     m_shopType: number
     function getCurrencyKey(self): string
     function init(self, arg1: number, arg2: number, arg3: number, arg4: number, arg5: number): boolean
@@ -10282,7 +10282,7 @@ declare class GameManager extends GManager
     m_playerUDID: string
     m_playerName: string
     m_scoreValid: boolean
-    -- skipped m_playerUserID: encrypted-field
+    m_playerUserID: number
     m_bgVolume: number
     m_sfxVolume: number
     m_timeOffset: number
@@ -10299,23 +10299,23 @@ declare class GameManager extends GManager
     m_editorEnabled: boolean
     m_sceneEnum: number
     m_searchObjectBool: boolean
-    -- skipped m_playerFrame: encrypted-field
-    -- skipped m_playerShip: encrypted-field
-    -- skipped m_playerBall: encrypted-field
-    -- skipped m_playerBird: encrypted-field
-    -- skipped m_playerDart: encrypted-field
-    -- skipped m_playerRobot: encrypted-field
-    -- skipped m_playerSpider: encrypted-field
-    -- skipped m_playerSwing: encrypted-field
-    -- skipped m_playerColor: encrypted-field
-    -- skipped m_playerColor2: encrypted-field
-    -- skipped m_playerGlowColor: encrypted-field
-    -- skipped m_playerStreak: encrypted-field
-    -- skipped m_playerShipFire: encrypted-field
-    -- skipped m_playerDeathEffect: encrypted-field
-    -- skipped m_playerJetpack: encrypted-field
-    -- skipped m_chk: encrypted-field
-    -- skipped m_secretNumber: encrypted-field
+    m_playerFrame: number
+    m_playerShip: number
+    m_playerBall: number
+    m_playerBird: number
+    m_playerDart: number
+    m_playerRobot: number
+    m_playerSpider: number
+    m_playerSwing: number
+    m_playerColor: number
+    m_playerColor2: number
+    m_playerGlowColor: number
+    m_playerStreak: number
+    m_playerShipFire: number
+    m_playerDeathEffect: number
+    m_playerJetpack: number
+    m_chk: number
+    m_secretNumber: number
     m_playerGlow: boolean
     m_playerIconType: number
     m_everyPlaySetup: boolean
@@ -10360,7 +10360,7 @@ declare class GameManager extends GManager
     m_shouldLoadUnlockValueKeeper: boolean
     m_unkBool7: boolean
     m_unkBool8: boolean
-    -- skipped m_hasRP: encrypted-field
+    m_hasRP: number
     m_hasDRP: boolean
     m_canGetLevelSaveData: boolean
     m_resolution: number
@@ -10681,7 +10681,7 @@ declare class GameStatsManager extends CCNode
     m_weeklyChest: CCDictionary?
     m_eventChest: CCDictionary?
     m_treasureRoomChests: CCDictionary?
-    -- skipped m_bonusKey: encrypted-field
+    m_bonusKey: number
     m_miscChests: CCDictionary?
     m_enabledItems: CCDictionary?
     m_wraithChests: CCDictionary?
@@ -11543,7 +11543,7 @@ declare class LevelEditorLayer extends GJBaseGameLayer
     m_unk3748: CCArray?
     m_keepEditorLayer: boolean
     m_unk3751: boolean
-    -- skipped m_coinCount: encrypted-field
+    m_coinCount: number
     m_triggersChanged: boolean
     m_colorTriggersChanged: boolean
     m_pulseTriggersChanged: boolean
@@ -11567,7 +11567,7 @@ declare class LevelEditorLayer extends GJBaseGameLayer
     m_editorUI: EditorUI?
     m_undoObjects: CCArray?
     m_redoObjects: CCArray?
-    -- skipped m_objectCount: encrypted-field
+    m_objectCount: number
     m_drawGridLayer: DrawGridLayer?
     m_updateColorSprites: boolean
     m_previewMode: boolean
@@ -13762,7 +13762,7 @@ declare class PlayerObject extends GameObject
     m_touchedCustomRing: boolean
     m_touchedGravityPortal: boolean
     m_maybeTouchedBreakableBlock: boolean
-    -- skipped m_jumpRelatedAC2: encrypted-field
+    m_jumpRelatedAC2: number
     m_touchedPad: boolean
     m_yVelocity: number
     m_fallSpeed: number
@@ -21145,7 +21145,7 @@ declare class Gd3dTexture
     function height(self): number
 end
 
-declare class Gd3dViewportFrame extends CCNode
+declare class Gd3dViewportFrame extends CCSprite
     function setCamera(self, transform: Gd3dTransform, fovDeg: number, near: number, far: number)
     function getCamera(self): { transform: Gd3dTransform, fovY: number, near: number, far: number }
     function setBackgroundColor(self, color: Gd3dVec3 | { r: number, g: number, b: number, a: number? })
@@ -21402,6 +21402,14 @@ export type ImGuiThemeNamespace = {
     applyCustom: (opts: ImGuiThemeOpts) -> (),
 }
 
+export type ImGuiFontHandle = {
+}
+
+export type ImGuiFontNamespace = {
+    add: (root: FsRoot, path: string, size: number) -> (ImGuiFontHandle?, string?),
+    with: (font: ImGuiFontHandle, fn: () -> ()) -> (),
+}
+
 export type ImGuiNamespace = {
     onDraw: (fn: () -> ()) -> ImGuiDrawHandle,
     cancel: (handle: ImGuiDrawHandle) -> (),
@@ -21476,6 +21484,7 @@ export type ImGuiNamespace = {
     Cond: ImGuiIntEnumTable,
     style: ImGuiStyleNamespace,
     theme: ImGuiThemeNamespace,
+    font: ImGuiFontNamespace,
 }
 
 declare imgui: ImGuiNamespace
