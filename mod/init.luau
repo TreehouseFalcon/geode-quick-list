@@ -5,8 +5,7 @@ local getQuickListButtonPosition = require("./getQuickListButtonPosition")
 local TopLocalList = require("./TopLocalList")
 local PriorityMenu = require("./PriorityMenu")
 
-local BUTTON_ID = "add-to-list-button"
-local PRIORITY_BUTTON_ID = "add-to-list-priority-button"
+local QUICK_LIST_BUTTON_ID = "add-to-list-button"
 local ADD_TO_LIST_BUTTON_SPRITE = "GJ_listAddBtn_001.png"
 local ADD_TO_LIST_BUTTON_SCALE = 0.62
 
@@ -91,7 +90,7 @@ local function addListButtonToCell(cell, level)
 				button:removeFromParentAndCleanup(true)
 			end
 
-			local priorityButton = priorityMenu and priorityMenu:getChildByID(PRIORITY_BUTTON_ID)
+			local priorityButton = priorityMenu and priorityMenu:getChildByID(QUICK_LIST_BUTTON_ID)
 			if priorityButton then
 				priorityButton:setVisible(false)
 				priorityButton:removeFromParentAndCleanup(true)
@@ -104,12 +103,12 @@ local function addListButtonToCell(cell, level)
 		return
 	end
 
-	local referenceButton = upsertQuickListButton(mainMenu, BUTTON_ID, mainMenuPosition, openForCell) -- first addition - placed for finding relative offset for the new priority menu
+	local referenceButton = upsertQuickListButton(mainMenu, QUICK_LIST_BUTTON_ID, mainMenuPosition, openForCell) -- first addition - placed for finding relative offset for the new priority menu
 	local priorityPosition = priorityMenu:convertToNodeSpace(mainMenu:convertToWorldSpace(mainMenuPosition))
 	if referenceButton then
 		referenceButton:removeFromParentAndCleanup(true)
 	end
-	upsertQuickListButton(priorityMenu, PRIORITY_BUTTON_ID, priorityPosition, openForCell) -- second addition - actually visible button
+	upsertQuickListButton(priorityMenu, QUICK_LIST_BUTTON_ID, priorityPosition, openForCell) -- second addition - actually visible button
 
 	PriorityMenu.setTouchPriority(priorityMenu)
 end
